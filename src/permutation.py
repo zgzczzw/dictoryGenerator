@@ -4,6 +4,7 @@ Created on 2015-9-21
 
 @author: eric.zhang
 '''
+import variables
 
 class Permutation:
     words = ["1", "2", "3"]
@@ -31,7 +32,8 @@ class Permutation:
         changeIndex = 0
         if(len(self.words) <= 0):
             return
-        print self.words
+        if variables.isDebug:
+            print self.words
         self.sort(0, self.length - 1);
         
         while True:
@@ -60,7 +62,8 @@ class Permutation:
         rst = "";
         for index in range(0, len(self.words)):
             rst += str(self.words[index])
-        print rst
+        if(variables.isDebug):
+            print rst
         self.result.append(rst)
             
     def sort(self, fromIndex, endIndex):

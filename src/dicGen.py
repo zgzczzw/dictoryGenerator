@@ -3,7 +3,7 @@
     Created on 2015-9-22
     
     @author: eric.zhang
-    '''
+'''
 from permutation import Permutation
 import variables
 from lauar import Lauar 
@@ -156,29 +156,69 @@ def generateNameList(f, l):
     #只有姓
     afterGenerateNameList(" ", lastName)
     
+def handleList(old_list):
+    new_list = list(set(old_list))
+    while '' in new_list:
+        new_list.remove('')
+    while ' ' in new_list:
+        new_list.remove(' ')
+    return new_list
+    
     
 if __name__ == '__main__':
     
 #==============================生日全序列============================================
 
-#    birthday = ""
-#    while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthday):
-#        birthday = raw_input("Please enter birthday(YYYY-MM-DD):")
-#    
-#    birthday = birthday.split("-");
-#    generateBirthDayList(birthday[0], birthday[1], birthday[2])
-#    
-#    lauar = Lauar()
-#    lauar = lauar.getLunar(birthday[0], birthday[1], birthday[2]);
-#    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
-#    字符串去重
-#    variables.birthday = list(set(variables.birthday))
-#    print variables.birthday
+    birthday = ""
+    while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthday):
+        birthday = raw_input("Please enter birthday(YYYY-MM-DD):")
+    
+    birthday = birthday.split("-");
+    generateBirthDayList(birthday[0], birthday[1], birthday[2])
+    
+    lauar = Lauar()
+    lauar = lauar.getLunar(birthday[0], birthday[1], birthday[2]);
+    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
+    variables.birthday = handleList(variables.birthday)
+    if variables.isDebug:
+        print variables.birthday
     
 #===============================姓名全序列=============================================
     f = raw_input("Please enter name(first name):")
     l = raw_input("Please enter name(last name):")
     generateNameList(f, l)
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
     
-    print variables.name
+#===============================英文名全序列============================================
+    f = raw_input("Please enter English name(first name):")
+    l = raw_input("Please enter English name(last name):")
+    generateNameList(f, l)
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
+
+#===============================昵称全序列=============================================
+    f = raw_input("Please enter nickname:")
+    generateNameList(f, " ")
+    
+    #    字符串去重
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
+    
+    f = open('./result.txt', 'w')
+    for s1 in variables.birthday:
+        for s2 in variables.name:
+            obj = Permutation()
+            obj.words = [s1, s2]
+            rst = obj.permutationList()
+            for s in rst:
+                print s
+                f.write(s);
+                f.write('\n')
+    f.close()
+    print "Done!"
+             
     

@@ -26,3 +26,5 @@ mmdd = []
 yyyy = []
 birthday = []
 name = []
+
+isDebug = False;
