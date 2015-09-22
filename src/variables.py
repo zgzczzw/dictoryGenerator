@@ -10,11 +10,7 @@ head = ['hello', 'hi', 'love', '!', '#', 'aa', 'wow', 'zz', '@']
 year = ['1937', '1949', '1976', '1997', '2000', '2002', '2006', '2007', '2008', '2010', '2011', '2012', '2013', '2014', '2015', '2020']
 lett = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-dict = []
-namefirst = []
-namewhole = []
-xing = []
-ming = []
+
 ul = []
 uu = []
 ll = []
@@ -24,7 +20,9 @@ yymmdd = []
 yy = []
 mmdd = []
 yyyy = []
+
 birthday = []
 name = []
+extinfo = []
 
-isDebug = False;
+isDebug = True;

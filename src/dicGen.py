@@ -156,6 +156,14 @@ def generateNameList(f, l):
     #只有姓
     afterGenerateNameList(" ", lastName)
     
+def generateStringList(s):
+    rst = []
+    rst.append(s)
+    rst.append(s.lower())
+    rst.append(s.upper())
+    rst.append(s.capitalize())
+    return rst
+    
 def handleList(old_list):
     new_list = list(set(old_list))
     while '' in new_list:
@@ -169,56 +177,88 @@ if __name__ == '__main__':
     
 #==============================生日全序列============================================
 
-    birthday = ""
-    while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthday):
-        birthday = raw_input("Please enter birthday(YYYY-MM-DD):")
-    
-    birthday = birthday.split("-");
-    generateBirthDayList(birthday[0], birthday[1], birthday[2])
-    
-    lauar = Lauar()
-    lauar = lauar.getLunar(birthday[0], birthday[1], birthday[2]);
-    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
-    variables.birthday = handleList(variables.birthday)
-    if variables.isDebug:
-        print variables.birthday
+#    birthday = ""
+#    while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthday):
+#        birthday = raw_input("Please enter birthday(YYYY-MM-DD):")
+#    
+#    birthday = birthday.split("-");
+#    generateBirthDayList(birthday[0], birthday[1], birthday[2])
+#    
+#    lauar = Lauar()
+#    lauar = lauar.getLunar(birthday[0], birthday[1], birthday[2]);
+#    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
+#    variables.birthday = handleList(variables.birthday)
+#    if variables.isDebug:
+#        print variables.birthday
     
 #===============================姓名全序列=============================================
-    f = raw_input("Please enter name(first name):")
-    l = raw_input("Please enter name(last name):")
-    generateNameList(f, l)
-    variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
+
+#    f = raw_input("Please enter name(first name):")
+#    l = raw_input("Please enter name(last name):")
+#    generateNameList(f, l)
+#    variables.name = handleList(variables.name)
+#    if variables.isDebug:
+#        print variables.name
     
 #===============================英文名全序列============================================
-    f = raw_input("Please enter English name(first name):")
-    l = raw_input("Please enter English name(last name):")
-    generateNameList(f, l)
-    variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
+
+#    f = raw_input("Please enter English name(first name):")
+#    l = raw_input("Please enter English name(last name):")
+#    generateNameList(f, l)
+#    variables.name = handleList(variables.name)
+#    if variables.isDebug:
+#        print variables.name
 
 #===============================昵称全序列=============================================
-    f = raw_input("Please enter nickname:")
-    generateNameList(f, " ")
-    
-    #    字符串去重
-    variables.name = handleList(variables.name)
+
+#    f = raw_input("Please enter nickname:")
+#    generateNameList(f, " ")
+#    
+#    #字符串去重
+#    variables.name = handleList(variables.name)
+#    if variables.isDebug:
+#        print variables.name
+
+#===============================添加额外序列============================================
+    ext = " ";
+    while ext.lower() != "no" and ext != '':
+        ext = raw_input("Please enter ext info (ext info or 'no'):")
+        if not(ext == "no" or ext == ''):
+            variables.extinfo.extend(generateStringList(ext))
+        
+    #字符串去重
+    variables.extinfo = handleList(variables.extinfo)
     if variables.isDebug:
-        print variables.name
-    
-    f = open('./result.txt', 'w')
-    for s1 in variables.birthday:
-        for s2 in variables.name:
-            obj = Permutation()
-            obj.words = [s1, s2]
-            rst = obj.permutationList()
-            for s in rst:
-                print s
-                f.write(s);
-                f.write('\n')
-    f.close()
-    print "Done!"
+        print variables.extinfo
+
+#===============================开始生成结果============================================
+#    variables.name.append("")
+#    variables.birthday.append("")
+#    variables.extinfo.append("")
+#    variables.dict_max.append("")
+#    variables.tail.append("")
+#    variables.head.append("")
+#    variables.year.append("")
+##    variables.lett.append("")
+#    
+#    f = open('./result.txt', 'w')
+#    for s1 in variables.birthday:
+#        for s2 in variables.name:
+#            for s3 in variables.extinfo:
+#                for s4 in variables.dict_max:
+#                    for s5 in variables.tail:
+#                        for s6 in variables.head:
+#                            for s7 in variables.year:
+#                                obj = Permutation()
+#                                obj.words = [s1, s2, s3, s4, s5, s6, s7]
+#                                obj.words = handleList(obj.words)
+#                                rst = obj.permutationList()
+#                                for s in rst:
+#                                    print s
+#                                    if not variables.isDebug:
+#                                        f.write(s);
+#                                        f.write('\n')
+#    f.close()
+#    print "Done!"
              
     
