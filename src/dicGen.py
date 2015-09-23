@@ -24,49 +24,50 @@ from permutation import Permutation
 import variables
 from lauar import Lauar 
 import re
+from const import const
     
-def generateBirthDayList(year, month, day):
+def generateBirthDayList(yearStr, monthStr, dayStr):
     #以1949-10-01为例
-    year = str(year)
-    month = "%02d" % (int(month))
-    day = "%02d" % (int(day))
+    yearStr = str(yearStr)
+    monthStr = "%02d" % (int(monthStr))
+    dayStr = "%02d" % (int(dayStr))
     
     birthDayList = []
-    birthDayList.append(year)
-    birthDayList.append(month)
-    birthDayList.append(day)
+    birthDayList.append(yearStr)
+    birthDayList.append(monthStr)
+    birthDayList.append(dayStr)
     
     obj = Permutation()
     obj.words = birthDayList
     variables.birthday.extend(obj.permutationList())
     
     #只有月份和日期的全序列 10-01
-    birthDayList.remove(year)
+    birthDayList.remove(yearStr)
     obj = Permutation()
     obj.words = birthDayList
     variables.birthday.extend(obj.permutationList())
-    birthDayList.append(year)
+    birthDayList.append(yearStr)
     
     #日期以单位数的全序列 1949-10-1
-    if re.match(r"0\d", month) or re.match(r"0\d", day):
-        birthDayList.remove(month)
-        birthDayList.append(str(int(month)))
-        birthDayList.remove(day)
-        birthDayList.append(str(int(day)))
+    if re.match(r"0\d", monthStr) or re.match(r"0\d", dayStr):
+        birthDayList.remove(monthStr)
+        birthDayList.append(str(int(monthStr)))
+        birthDayList.remove(dayStr)
+        birthDayList.append(str(int(dayStr)))
         obj.words = birthDayList
         variables.birthday.extend(obj.permutationList())
         
         #日期以单位数，没有年份的全序列 10-1
-        birthDayList.remove(year)
+        birthDayList.remove(yearStr)
         obj = Permutation()
         obj.words = birthDayList
         variables.birthday.extend(obj.permutationList())
-        birthDayList.append(year)
+        birthDayList.append(yearStr)
         
     #年份是两位数的全序列 49-10-1
-    if len(year) == 4:
-        sYear = year[2:4]
-        generateBirthDayList(sYear, month, day)
+    if len(yearStr) == 4:
+        sYear = yearStr[2:4]
+        generateBirthDayList(sYear, monthStr, dayStr)
         
 def afterGenerateNameList(f, l):
     nameList = []
@@ -239,123 +240,8 @@ def handleList(old_list):
     while ' ' in new_list:
         new_list.remove(' ')
     return new_list
-    
-    
-if __name__ == '__main__':
-    
-#==============================生日全序列============================================
 
-    birthday = ""
-    while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthday):
-        birthday = raw_input("Please enter birthday(YYYY-MM-DD):")
-    
-    birthday = birthday.split("-");
-    generateBirthDayList(birthday[0], birthday[1], birthday[2])
-    
-    lauar = Lauar()
-    lauar = lauar.getLunar(birthday[0], birthday[1], birthday[2]);
-    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
-    variables.birthday = handleList(variables.birthday)
-    if variables.isDebug:
-        print variables.birthday
-    
-#===============================姓名全序列=============================================
-
-    f = raw_input("Please enter name(first name):")
-    l = raw_input("Please enter name(last name):")
-    generateNameList(f, l)
-    variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
-    
-#===============================英文名全序列============================================
-
-    f = raw_input("Please enter English name(first name):")
-    l = raw_input("Please enter English name(last name):")
-    generateNameList(f, l)
-    variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
-
-#===============================昵称全序列=============================================
-
-    f = raw_input("Please enter nickname:")
-    generateNameList(f, " ")
-    
-    #字符串去重
-    variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
-
-#===============================添加电话号码===========================================
-
-    phone = " "
-    while not re.match(r"1\d{10}", phone):
-        phone = raw_input("Please enter phone number:")
-    generatePhoneList(phone)
-    #字符串去重
-    variables.phoneNumer = handleList(variables.phoneNumer)
-    if variables.isDebug:
-        print variables.phoneNumer
-
-#===============================添加QQ号===========================================
-
-    qq = " "
-    while not re.match(r"\d+", qq):
-        qq = raw_input("Please enter QQ number:")
-    variables.qq.extend(generateNumberList(qq))
-    #字符串去重
-    variables.qq = handleList(variables.qq)
-    if variables.isDebug:
-        print variables.qq
-
-#===============================添加Email号===========================================
-
-    email = " "
-    email = raw_input("Please enter email account:")
-    
-    if(re.match(r"[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+", email)):
-        emailList = email.split("@")
-        email = emailList[0]
-        
-    variables.email.extend(generateStringList(email))
-    #字符串去重
-    variables.email = handleList(variables.email)
-    if variables.isDebug:
-        print variables.email
-        
-#===============================添加额外序列============================================
-
-    ext = " "
-    while ext.lower() != "no" and ext != '':
-        ext = raw_input("Please enter ext info (ext info or 'no'):")
-        if not(ext == "no" or ext == ''):
-            variables.extinfo.extend(generateStringList(ext))
-        
-    #字符串去重
-    variables.extinfo = handleList(variables.extinfo)
-    if variables.isDebug:
-        print variables.extinfo
-        
-#===============================生产密码位数============================================
-
-    minLen = raw_input("Please enter min length of password:")
-    try:
-        variables.minLen = int(minLen)
-    except:
-        variables.minLen = 6
-    maxLen = raw_input("Please enter max length of password:")
-    try:
-        variables.maxLen = int(maxLen)
-    except:
-        variables.maxLen = 32
-        
-    if(variables.maxLen < variables.minLen):
-        tmp = variables.minLen
-        variables.minLen = variables.maxLen
-        variables.maxLen = tmp
-
-#===============================开始生成结果============================================
+def doGenerate():
     variables.name.append("")
     variables.birthday.append("")
     variables.extinfo.append("")
@@ -369,28 +255,222 @@ if __name__ == '__main__':
     variables.phoneNumer.append("")
     
     f = open('./result.txt', 'w')
-    for s1 in variables.birthday:
-        for s2 in variables.name:
-            for s3 in variables.extinfo:
-                for s4 in variables.dict_max:
-                    for s5 in variables.tail:
-                        for s6 in variables.head:
-                            for s7 in variables.year:
-                                for s8 in variables.phoneNumer:
-                                    for s9 in variables.qq:
-                                        for s10 in variables.email:
-                                            obj = Permutation()
-                                            obj.words = [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10]
-                                            obj.words = handleList(obj.words)
-                                            rst = obj.permutationList()
-                                            for s in rst:
-                                                if len(s) >= variables.minLen and len(s) <= variables.maxLen:
-                                                    print str(len(s)) + ":" + s
+    for birstdayItem in variables.birthday:
+        for nameItem in variables.name:
+            for extinfoItem in variables.extinfo:
+                for dictMaxItem in variables.dict_max:
+                    for yearItem in variables.year:
+                        for phoneItem in variables.phoneNumer:
+                            for qqItem in variables.qq:
+                                for emailItem in variables.email:
+                                    obj = Permutation()
+                                    obj.words = [birstdayItem, nameItem, extinfoItem, \
+                                                 dictMaxItem, \
+                                                 yearItem, phoneItem, qqItem, \
+                                                 emailItem]
+                                    obj.words = handleList(obj.words)
+                                    rst = obj.permutationList()
+                                    for s in rst:
+                                        if len(s) < variables.minLen or len(s) > variables.maxLen:
+                                            break
+                                        for tailItem in variables.tail:
+                                            for headItem in variables.head:
+                                                s2 = headItem + s + tailItem
+                                                if len(s2) >= variables.minLen and len(s2) <= variables.maxLen:
+                                                    print s2
                                                     if not variables.isDebug:
-                                                        f.write(s);
+                                                        f.write(s2);
                                                         f.write('\n')
+
     f.close()
     print "Done!"
+    
+    
+if __name__ == '__main__':
+    haveConfig = False
+    birthdayStr = "" 
+    fnStr = "" #first name of name
+    lnStr = "" #last name of name
+    fenStr = "" #first name of English name
+    lenStr = "" #last name of English name
+    nnStr = "" #nickname
+    phoneStr = " " #phone number
+    qqStr = " " #qq
+    emailStr = " " #email
+    extStr = " "
+    extStrList = [] #ext info
+    minLen = "";
+    maxLen = "";
+#=============================读取配置文件===========================================
+    try:
+        f = open('./config.txt', 'r')
+        haveConfig = True
+        birthdayStr = f.readline().strip('\n')
+        fnStr = f.readline().strip('\n')
+        lnStr = f.readline().strip('\n')
+        fenStr = f.readline().strip('\n')
+        lenStr = f.readline().strip('\n')
+        nnStr = f.readline().strip('\n')
+        phoneStr = f.readline().strip('\n')
+        qqStr = f.readline().strip('\n')
+        emailStr = f.readline().strip('\n')
+        minLen = f.readline().strip('\n')
+        maxLen = f.readline().strip('\n')
+        extStr = f.readline().strip('\n')
+        while extStr:
+            extStrList.append(extStr)
+            extStr = f.readline().strip('\n')
+        f.close()
+    except:
+        haveConfig = False
+        print "there is no config file found"
+        
+    if not haveConfig:
+        while not re.match(r"[1,2]\d{3}-[0,1]\d{1}-[0,1,2,3]\d{1}", birthdayStr):
+            birthdayStr = raw_input("Please enter birthday(YYYY-MM-DD):")
+            
+        fnStr = raw_input("Please enter name(first name):")
+        
+        lnStr = raw_input("Please enter name(last name):")
+        
+        fenStr = raw_input("Please enter English name(first name):")
+        
+        lenStr = raw_input("Please enter English name(last name):")
+        
+        nnStr = raw_input("Please enter nickname:")
+        
+        while not re.match(r"1\d{10}", phoneStr):
+            phoneStr = raw_input("Please enter phone number:")
+            
+        emailStr = raw_input("Please enter email account:")
+        
+        while not re.match(r"\d+", qqStr):
+            qqStr = raw_input("Please enter QQ number:")
+            
+        while extStr.lower() != "no" and extStr != '':
+            extStr = raw_input("Please enter ext info (ext info or 'no'):")
+            if(extStr.lower() != "no" and extStr != ''):
+                extStrList.append(extStr)
+            
+        minLen = raw_input("Please enter min length of password:")
+        
+        maxLen = raw_input("Please enter max length of password:")
+        
+#===============================生产密码位数============================================
+    try:
+        variables.minLen = int(minLen)
+    except:
+        variables.minLen = const.MIN_LEN_PW
+    
+    try:
+        variables.maxLen = int(maxLen)
+    except:
+        variables.maxLen = const.MAX_LEN_PW
+        
+    if(variables.maxLen < variables.minLen):
+        tmp = variables.minLen
+        variables.minLen = variables.maxLen
+        variables.maxLen = tmp
+
+#==============================输出信息===============================================
+        
+    print "BirthDay:" + birthdayStr 
+    print "Name:" + fnStr + " " + lnStr
+    print "English Name:" + fenStr + " " + lenStr
+    print "Nickname:" + nnStr
+    print "Phone Number:" + phoneStr
+    print "QQ:" + qqStr
+    print "Email:" + emailStr
+    print "Ext Info:" + str(extStrList)
+    print "Len of Password:" + str(variables.minLen) + "-" + str(variables.maxLen)
+    raw_input("Confirm?(Press any key)")
+    print "================Begin Generate Dictory================"
+#==============================生日全序列============================================
+   
+    birthdayStr = birthdayStr.split("-");
+    generateBirthDayList(birthdayStr[0], birthdayStr[1], birthdayStr[2])
+    
+    lauar = Lauar()
+    lauar = lauar.getLunar(birthdayStr[0], birthdayStr[1], birthdayStr[2]);
+    generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
+    variables.birthday = handleList(variables.birthday)
+    if variables.isDebug:
+        print variables.birthday
+        
+    
+#===============================姓名全序列=============================================
+
+    
+    generateNameList(fnStr, lnStr)
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
+    
+#===============================英文名全序列============================================
+
+
+    generateNameList(fenStr, lenStr)
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
+
+#===============================昵称全序列=============================================
+
+    
+    generateNameList(nnStr, " ")
+    
+    #字符串去重
+    variables.name = handleList(variables.name)
+    if variables.isDebug:
+        print variables.name
+
+#===============================添加电话号码===========================================
+
+    
+    generatePhoneList(phoneStr)
+    #字符串去重
+    variables.phoneNumer = handleList(variables.phoneNumer)
+    if variables.isDebug:
+        print variables.phoneNumer
+
+#===============================添加QQ号===========================================
+
+    variables.qq.extend(generateNumberList(qqStr))
+    #字符串去重
+    variables.qq = handleList(variables.qq)
+    if variables.isDebug:
+        print variables.qq
+
+#===============================添加Email号===========================================
+    
+    if(re.match(r"[^\._-][\w\.-]+@(?:[A-Za-z0-9]+\.)+[A-Za-z]+", emailStr)):
+        emailList = emailStr.split("@")
+        emailStr = emailList[0]
+        
+    variables.email.extend(generateStringList(emailStr))
+    #字符串去重
+    variables.email = handleList(variables.email)
+    if variables.isDebug:
+        print variables.email
+        
+#===============================添加额外序列============================================
+
+    if extStrList:
+        for extStr in extStrList:
+            if not(extStr == "no" or extStr == ''):
+                variables.extinfo.extend(generateStringList(extStr))
+
+        
+    #字符串去重
+    variables.extinfo = handleList(variables.extinfo)
+    if variables.isDebug:
+        print variables.extinfo
+        
+
+#===============================开始生成结果============================================
+    
+    doGenerate()
+    
 
              
     
