@@ -480,7 +480,7 @@ if __name__ == '__main__':
     hours = seconds / 3600
     minutes = (seconds - (hours * 3600)) / 60
     seconds = seconds - (hours * 3600) - (minutes * 60)
-    print hours + "hours" + minutes + "minutes" + seconds + "seconds"
+    print str(hours) + "hours" + str(minutes) + "minutes" + str(seconds) + "seconds"
 
              
     

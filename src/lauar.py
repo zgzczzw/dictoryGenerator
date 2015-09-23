@@ -91,28 +91,28 @@ class Lauar:
             i >>= 1;
 
 #        for (i = 0x8000; i > 0x8; i >>= 1)
-#            sum += (lunarInfo[y - 1900] & i) == 0 ? 0 : 1; #// 大月+1�?
+#            sum += (lunarInfo[y - 1900] & i) == 0 ? 0 : 1; #// 大月+1�?
 #        print str(y) + ":" + str(sum + self.leapDays(y))
-        return (sum + self.leapDays(y)) #// +闰月的天�?
+        return (sum + self.leapDays(y)) #// +闰月的天�?
     
     
-    #传回农历 y年闰哪个�?1-12 , 没闰传回 0
+    #传回农历 y年闰哪个月1-12 , 没闰传回 0
     def leapMonth(self, y):
         return (self.lunarInfo[y - 1900] & 0xf)
     
     def monthDays(self, y, m):
-        return ((self.lunarInfo[y - 1900] & (0x10000 >> m)) == 0 and 29 or 30);
+        return ((self.lunarInfo[y - 1900] & (0x10000 >> m)) == 0 and 29 or 30)
 
     
     def Lunar1(self, objDate): 
         global year
         date1 = datetime.datetime(1900, 1, 31)
        
-#        // 1900 - 01 - 31是农�?900年正月初�?
-        offset = (objDate - date1).days; 
+#        // 1900 - 01 - 31是农�?900年正月初�?
+        offset = (objDate - date1).days 
 #        // 天数(86400000=24 * 60 * 60 * 1000)
-#        // 1899 - 12 - 21是农�?899年腊月甲子日
-        monCyl = 14; 
+#        // 1899 - 12 - 21是农�?899年腊月甲子日
+        monCyl = 14
 #        // 1898 - 10 - 01是农历甲子月
 #        // 得到年数
         for i in range(1900, 2050):
@@ -130,7 +130,7 @@ class Lauar:
 
         self.year = i
         leap = self.leapMonth(i) #// 闰哪个月
-        isLeap = False;
+        isLeap = False
         
         for i in range(1, 13):
             if (offset <= 0):
@@ -178,17 +178,17 @@ class Lauar:
         
         
     def getLunar(self, year, month, day):
-        SY = int(year);
-        SM = int(month);
-        SD = int(day);
+        SY = int(year)
+        SM = int(month)
+        SD = int(day)
         sDObj = datetime.datetime(SY, SM, SD)
 #        // 日期
-        self.Lunar1(sDObj); #// 农历
-#        s = str(self.getYear()) + "�?;
-#        s += str(self.getMonth()) + "�?;
+        self.Lunar1(sDObj) #// 农历
+#        s = str(self.getYear()) + "�?;
+#        s += str(self.getMonth()) + "�?;
 #        s += str(self.getDay()) + " ";
 
-        return (self.getYear(), self.getMonth(), self.getDay());
+        return (self.getYear(), self.getMonth(), self.getDay())
     
 #if __name__ == '__main__':
 #    obj = Lauar();

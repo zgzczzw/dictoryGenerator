@@ -50,12 +50,12 @@ class Permutation:
             return
         if const.isDebug:
             print self.words
-        self.sort(0, self.length - 1);
+        self.sort(0, self.length - 1)
         
         while True:
             #输出一种全排列
             self.output();
-            fromIndex = endIndex = self.length - 1;
+            fromIndex = endIndex = self.length - 1
             #向前查找第一个变小的元素
             while (fromIndex > 0 and self.words[fromIndex] < self.words[fromIndex - 1]):
                 fromIndex -= 1
@@ -68,9 +68,9 @@ class Permutation:
             while (changeIndex + 1 < self.length and self.words[changeIndex + 1] > self.words[fromIndex - 1]):
                 changeIndex += 1
                 
-            self.swap(fromIndex - 1, changeIndex);#交换两个值
+            self.swap(fromIndex - 1, changeIndex)#交换两个值
             
-            self.invertArray(fromIndex, endIndex); #对后面的所有值进行反向处理
+            self.invertArray(fromIndex, endIndex) #对后面的所有值进行反向处理
             
         return self.result
             
@@ -80,7 +80,7 @@ class Permutation:
             rst += str(self.words[index])
         if(const.isDebug):
             print rst
-            self.result.append(rst)
+        self.result.append(rst)
             
     def sort(self, fromIndex, endIndex):
                 self.words.sort();
@@ -89,9 +89,9 @@ class Permutation:
         if ((indexX != indexY) and indexX >= 0 \
             and indexY >= 0 and len(self.words) \
             > indexX and len(self.words) > indexY):
-            ch = self.words[indexX];
-            self.words[indexX] = self.words[indexY];
-            self.words[indexY] = ch;
+            ch = self.words[indexX]
+            self.words[indexX] = self.words[indexY]
+            self.words[indexY] = ch
             
     def invertArray(self, fromIndex, endIndex):
         while fromIndex < endIndex:
