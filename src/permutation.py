@@ -20,7 +20,7 @@
   @contact: zgzczzw@163.com
   
 '''
-import variables
+from const import const
 
 class Permutation:
     words = ["1", "2", "3"]
@@ -48,7 +48,7 @@ class Permutation:
         changeIndex = 0
         if(len(self.words) <= 0):
             return
-        if variables.isDebug:
+        if const.isDebug:
             print self.words
         self.sort(0, self.length - 1);
         
@@ -78,9 +78,8 @@ class Permutation:
         rst = "";
         for index in range(0, len(self.words)):
             rst += str(self.words[index])
-        if(variables.isDebug):
+        if(const.isDebug):
             print rst
-        if len(rst) >= variables.minLen and len(rst) <= variables.maxLen:
             self.result.append(rst)
             
     def sort(self, fromIndex, endIndex):

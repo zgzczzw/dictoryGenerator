@@ -27,3 +27,5 @@ class const:
         self.__dict__[name] = value
     MAX_LEN_PW = 16
     MIN_LEN_PW = 6
+    isDebug = True;
+    isRelease = True;

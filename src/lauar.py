@@ -91,12 +91,12 @@ class Lauar:
             i >>= 1;
 
 #        for (i = 0x8000; i > 0x8; i >>= 1)
-#            sum += (lunarInfo[y - 1900] & i) == 0 ? 0 : 1; #// 大月+1天
+#            sum += (lunarInfo[y - 1900] & i) == 0 ? 0 : 1; #// 大月+1�?
 #        print str(y) + ":" + str(sum + self.leapDays(y))
-        return (sum + self.leapDays(y)) #// +闰月的天数
+        return (sum + self.leapDays(y)) #// +闰月的天�?
     
     
-    #传回农历 y年闰哪个月 1-12 , 没闰传回 0
+    #传回农历 y年闰哪个�?1-12 , 没闰传回 0
     def leapMonth(self, y):
         return (self.lunarInfo[y - 1900] & 0xf)
     
@@ -108,10 +108,10 @@ class Lauar:
         global year
         date1 = datetime.datetime(1900, 1, 31)
        
-#        // 1900 - 01 - 31是农历1900年正月初一
+#        // 1900 - 01 - 31是农�?900年正月初�?
         offset = (objDate - date1).days; 
 #        // 天数(86400000=24 * 60 * 60 * 1000)
-#        // 1899 - 12 - 21是农历1899年腊月甲子日
+#        // 1899 - 12 - 21是农�?899年腊月甲子日
         monCyl = 14; 
 #        // 1898 - 10 - 01是农历甲子月
 #        // 得到年数
@@ -184,8 +184,8 @@ class Lauar:
         sDObj = datetime.datetime(SY, SM, SD)
 #        // 日期
         self.Lunar1(sDObj); #// 农历
-#        s = str(self.getYear()) + "年";
-#        s += str(self.getMonth()) + "月";
+#        s = str(self.getYear()) + "�?;
+#        s += str(self.getMonth()) + "�?;
 #        s += str(self.getDay()) + " ";
 
         return (self.getYear(), self.getMonth(), self.getDay());

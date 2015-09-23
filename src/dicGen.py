@@ -25,6 +25,7 @@ import variables
 from lauar import Lauar 
 import re
 from const import const
+import datetime
     
 def generateBirthDayList(yearStr, monthStr, dayStr):
     #以1949-10-01为例
@@ -263,11 +264,19 @@ def doGenerate():
                         for phoneItem in variables.phoneNumer:
                             for qqItem in variables.qq:
                                 for emailItem in variables.email:
+                                    
+                                    preS = birstdayItem + nameItem + extinfoItem\
+                                     + dictMaxItem + yearItem + phoneItem\
+                                      + qqItem + emailItem
+                                    if len(preS) < variables.minLen or len(preS) > variables.maxLen:
+                                        continue
+                                      
                                     obj = Permutation()
                                     obj.words = [birstdayItem, nameItem, extinfoItem, \
                                                  dictMaxItem, \
                                                  yearItem, phoneItem, qqItem, \
                                                  emailItem]
+                                    
                                     obj.words = handleList(obj.words)
                                     rst = obj.permutationList()
                                     for s in rst:
@@ -278,7 +287,7 @@ def doGenerate():
                                                 s2 = headItem + s + tailItem
                                                 if len(s2) >= variables.minLen and len(s2) <= variables.maxLen:
                                                     print s2
-                                                    if not variables.isDebug:
+                                                    if const.isRelease:
                                                         f.write(s2);
                                                         f.write('\n')
 
@@ -394,25 +403,21 @@ if __name__ == '__main__':
     lauar = lauar.getLunar(birthdayStr[0], birthdayStr[1], birthdayStr[2]);
     generateBirthDayList(str(lauar[0]) , "%02d" % (lauar[1]), "%02d" % (lauar[2]))
     variables.birthday = handleList(variables.birthday)
-    if variables.isDebug:
-        print variables.birthday
-        
     
 #===============================姓名全序列=============================================
 
     
     generateNameList(fnStr, lnStr)
     variables.name = handleList(variables.name)
-    if variables.isDebug:
+    if const.isDebug:
         print variables.name
+        
     
 #===============================英文名全序列============================================
 
 
     generateNameList(fenStr, lenStr)
     variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
 
 #===============================昵称全序列=============================================
 
@@ -421,8 +426,6 @@ if __name__ == '__main__':
     
     #字符串去重
     variables.name = handleList(variables.name)
-    if variables.isDebug:
-        print variables.name
 
 #===============================添加电话号码===========================================
 
@@ -430,16 +433,12 @@ if __name__ == '__main__':
     generatePhoneList(phoneStr)
     #字符串去重
     variables.phoneNumer = handleList(variables.phoneNumer)
-    if variables.isDebug:
-        print variables.phoneNumer
 
 #===============================添加QQ号===========================================
 
     variables.qq.extend(generateNumberList(qqStr))
     #字符串去重
     variables.qq = handleList(variables.qq)
-    if variables.isDebug:
-        print variables.qq
 
 #===============================添加Email号===========================================
     
@@ -450,8 +449,6 @@ if __name__ == '__main__':
     variables.email.extend(generateStringList(emailStr))
     #字符串去重
     variables.email = handleList(variables.email)
-    if variables.isDebug:
-        print variables.email
         
 #===============================添加额外序列============================================
 
@@ -463,14 +460,27 @@ if __name__ == '__main__':
         
     #字符串去重
     variables.extinfo = handleList(variables.extinfo)
-    if variables.isDebug:
-        print variables.extinfo
         
 
 #===============================开始生成结果============================================
-    
+    if const.isDebug:
+        print variables.birthday
+        print variables.name
+        print variables.phoneNumer
+        print variables.qq
+        print variables.email
+        print variables.extinfo
+        raw_input("confirm?(Press Any Key)")
+    starttime = datetime.datetime.now()
     doGenerate()
+    endtime = datetime.datetime.now()
     
+    seconds = (endtime - starttime).seconds
+    
+    hours = seconds / 3600
+    minutes = (seconds - (hours * 3600)) / 60
+    seconds = seconds - (hours * 3600) - (minutes * 60)
+    print hours + "hours" + minutes + "minutes" + seconds + "seconds"
 
              
     
