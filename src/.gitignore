@@ -3,5 +3,5 @@
 /variables.pyc
 /build/
 /dist/
-*.txt
+result.txt
 *.ico
