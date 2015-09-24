@@ -155,6 +155,20 @@ def generateNameList(f, l):
     afterGenerateNameList(firstName, lastName)
     afterGenerateNameList(firstName.capitalize(), lastName)
     afterGenerateNameList(firstName, lastName.capitalize())
+    
+    variables.head.append(firstName)
+    variables.tail.append(firstName)
+    variables.head.append(lastName)
+    variables.tail.append(lastName)
+    variables.head.append(firstName.capitalize())
+    variables.tail.append(firstName.capitalize())
+    variables.head.append(lastName.capitalize())
+    variables.tail.append(lastName.capitalize())
+    variables.head.append(firstName.upper())
+    variables.tail.append(firstName.upper())
+    variables.head.append(lastName.upper())
+    variables.tail.append(lastName.upper())
+    
     #只有名
     afterGenerateNameList(firstName, " ")
     afterGenerateNameList(firstName.capitalize(), " ")
@@ -243,6 +257,9 @@ def handleList(old_list):
     return new_list
 
 def doGenerate():
+    variables.head = handleList(variables.head)
+    variables.tail = handleList(variables.tail)
+    
     variables.name.append("")
     variables.birthday.append("")
     variables.extinfo.append("")
